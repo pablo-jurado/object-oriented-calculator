@@ -1,0 +1,113 @@
+html {
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+body {
+  background: linear-gradient(135deg, #9f48f2 0%, #3c87b6 100%);
+  height: 100vh;
+}
+
+button {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  border: solid 1px rgba(255, 255, 255, 0.5);
+  color: white;
+  font-weight: bolder;
+}
+
+button:hover {
+  background: #8d5fc6;
+}
+
+.calculator {
+  width: 250px;
+  margin: 10px;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+}
+
+.screen-wrapper {
+  display: flex;
+}
+
+.column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.column button {
+  height: 50px;
+}
+
+.expand {
+  height: 100%;
+}
+.screen {
+  color: white;
+  border: solid 1px rgba(255, 255, 255, 0.5);
+  background: #8d5fc6;
+  flex: 3;
+  max-width: 157px;
+}
+
+.top {
+  padding: 10px;
+  height: calc(1em + 10px);
+  font-size: 1em;
+  overflow: hidden;
+}
+
+.bottom {
+  padding: 10px;
+  font-size: 2em;
+  overflow: hidden;
+}
+
+.wrapper-btns {
+  display: flex;
+  flex-flow: column;
+}
+
+.row {
+  height: 50px;
+  width: 100%;
+  display: flex;
+  align-items: stretch;
+}
+
+.row button {
+  flex: 1;
+}
+
+.row .flex2 {
+  flex: 2.35;
+}
+
+.row .flex3 {
+  flex: 3.7;
+}
+
+.bottom-right-border {
+  border-bottom-right-radius: 6px;
+}
+
+.bottom-left-border {
+  border-bottom-left-radius: 6px;
+}
+
+.top-right-border {
+  border-top-right-radius: 6px;
+}
+
+.top-left-border {
+  border-top-left-radius: 6px;
+}
+.calc-container {
+  display: inline-block;
+}
+x
