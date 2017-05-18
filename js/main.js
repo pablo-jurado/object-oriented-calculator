@@ -61,7 +61,7 @@ console.assert(calculator4.value() === 1.7734)
 
 // calculators can be completely removed from the DOM after calling the .destroy()
 // method
-setTimeout(calculator3.destroy, 8 * 1000)
+setTimeout(function () { calculator3.destroy() }, 8 * 1000)
 
 // the calculator should ignore any input that does not make sense
 // ie: just like a real calculator

@@ -1,11 +1,17 @@
 // TODO: your Calculator class definition goes here
 // !!!!! NO CODE ABOVE THIS LINE !!!!!!
 class Calculator {
-  constructor (id) {
-    this.id = id
+  constructor (elId) {
+    let el = document.getElementById(elId)
+    if (!el) {
+      console.log('TODO: error message here')
+      return null
+    }
+    this._el = el
+    this.id = elId
     this.acc = []
-    this._renderCalculator(id)
-    this._addListener(id)
+    this._renderCalculator(elId)
+    this._addListener(elId)
   }
 
   press (input) {
@@ -13,8 +19,7 @@ class Calculator {
     if (input === 'C') this.acc = []
     if (input === '=') this.value()
 
-    // this.acc.push(num)
-    // let num = input.parse(10)
+    this.acc.push(input)
   }
 
   pressButton (numStr) {
@@ -23,29 +28,28 @@ class Calculator {
 
   value () {
     let result = 0
-    if (this.acc[1] === '+') result = this.acc[0] + this.acc[1]
-    if (this.acc[1] === '-') result = this.acc[0] - this.acc[1]
-    if (this.acc[1] === 'x') result = this.acc[0] * this.acc[1]
-    if (this.acc[1] === '/') result = this.acc[0] / this.acc[1]
+    let num1 = parseInt(this.acc[0], 10)
+    let num2 = parseInt(this.acc[2], 10)
+
+    if (this.acc[1] === '+') result = num1 + num2
+    if (this.acc[1] === '-') result = num1 - num2
+    if (this.acc[1] === 'x') result = num1 * num2
+    if (this.acc[1] === '/') result = num1 / num2
+
     return result
   }
 
   lock () {
-    document.getElementById(this.id).removeEventListener('click', this._btnHandlers)
+    this._el.removeEventListener('click', this._btnHandlers)
     console.info(this.id, 'lock')
-    // A calculator can be in a "locked" state.
-    // Button presses should have no effect if the calculator is locked.
-    // The "locked" state should look visually disabled.
   }
 
   unlock () {
-    document.getElementById(this.id).addEventListener('click', this._btnHandlers)
+    this._el.addEventListener('click', this._btnHandlers)
     console.info(this.id, 'unlock')
   }
 
   sayHello () {
-    // there should be an Easter Egg method called .sayHello() that clears whatever
-    // is on the screen and sets it to "0.7734" (hello upside down)
     this.acc = [0.7734]
   }
 
@@ -56,19 +60,18 @@ class Calculator {
   }
 
   destroy () {
-    console.info(this.id, 'destroyed!')
-    // calculators can be completely removed from the DOM after calling the .destroy()
+    console.log(this.id, 'destroyed!')
+    this._el.innerHTML = ''
   }
 
   _addListener (id) {
-    document.getElementById(id).addEventListener('click', this._btnHandlers)
-  }
-
-  _btnHandlers (e) {
-    let value = e.target.value
-    if (value !== undefined) {
-      console.info(this.id, value)
-    }
+    var that = this
+    this._el.addEventListener('click', function (evt) {
+      let btnValue = evt.target.value
+      if (btnValue !== undefined) {
+        that.press(btnValue)
+      }
+    })
   }
 
   _renderCalculator (id) {
