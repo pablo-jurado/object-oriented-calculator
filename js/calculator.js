@@ -8,18 +8,25 @@ class Calculator {
       return null
     }
     this._el = el
-    this.id = elId
+    this.numStr = ''
     this.acc = []
-    this._renderCalculator(elId)
+    // this.result = 0
+    this._renderCalculator()
     this._addListener(elId)
   }
 
-  press (input) {
-    if (input.toString().length !== 1) return
-    if (input === 'C') this.acc = []
-    if (input === '=') this.value()
+  press (btnValue) {
+    let input = btnValue.toString()
+    if (input.length !== 1) return
 
-    this.acc.push(input)
+    if (input === 'C') {
+      this.clear()
+    } else if (input === '+' || input === '-' || input === 'x' || input === '/' || input === '=') {
+      this._updateArray(input)
+    } else {
+      this.numStr += input
+      this._updateScreen(this.numStr)
+    }
   }
 
   pressButton (numStr) {
@@ -27,41 +34,73 @@ class Calculator {
   }
 
   value () {
-    let result = 0
-    let num1 = parseInt(this.acc[0], 10)
-    let num2 = parseInt(this.acc[2], 10)
+    if (this.acc.length <= 2) return null
+    let result
+    let opp = this.acc[1]
+    let num1 = this.acc[0]
+    let num2 = this.acc[2]
 
-    if (this.acc[1] === '+') result = num1 + num2
-    if (this.acc[1] === '-') result = num1 - num2
-    if (this.acc[1] === 'x') result = num1 * num2
-    if (this.acc[1] === '/') result = num1 / num2
+    if (opp === '+') result = num1 + num2
+    if (opp === '-') result = num1 - num2
+    if (opp === 'x') result = num1 * num2
+    if (opp === '/') result = num1 / num2
 
+    this.numStr = result
     return result
+  }
+
+  clear () {
+    this.numStr = ''
+    this.acc = []
+    this._clearScreen()
   }
 
   lock () {
     this._el.removeEventListener('click', this._btnHandlers)
-    console.info(this.id, 'lock')
+    console.info(this._el.id, 'lock')
   }
 
   unlock () {
     this._el.addEventListener('click', this._btnHandlers)
-    console.info(this.id, 'unlock')
+    console.info(this._el.id, 'unlock')
   }
 
   sayHello () {
-    this.acc = [0.7734]
+    this.clear()
+    this.numStr = '0.7734'
   }
 
   toString () {
     let str = this.acc.join(' ')
-    console.log(str)
     return str
   }
 
   destroy () {
-    console.log(this.id, 'destroyed!')
+    console.log(this._el.id, 'destroyed!')
     this._el.innerHTML = ''
+  }
+
+  _updateArray (input) {
+    let num = parseFloat(this.numStr, 10)
+    if (num) this.acc.push(num)
+    this.numStr = ''
+    this.acc.push(input)
+    this._updateScreen(this.acc)
+    if (input === '=') {
+      this._el.querySelector('.screen').innerHTML += ' ' + this.value()
+      // this.clear()
+    }
+    console.log(this.acc)
+  }
+
+  _clearScreen () {
+    this._el.querySelector('.screen').innerHTML = '0'
+  }
+
+  _updateScreen (input) {
+    let screen = this._el.querySelector('.screen')
+    if (typeof input === 'string') screen.innerHTML = input
+    else screen.innerHTML = input.join(' ')
   }
 
   _addListener (id) {
@@ -74,18 +113,15 @@ class Calculator {
     })
   }
 
-  _renderCalculator (id) {
-    document.getElementById(id).innerHTML = this._buildHtml()
+  _renderCalculator () {
+    this._el.innerHTML = this._buildHtml()
   }
 
   _buildHtml () {
     return `<div class="calculator">
               <div class="wrapper-btns">
                 <div class="screen-wrapper">
-                  <div class="screen top-left-border">
-                    <div class="top"></div>
-                    <div class="bottom"></div>
-                  </div>
+                  <div class="screen top-left-border"></div>
                   <div class="column">
                     <button value="C" class="top-right-border" type="button" name="button">C</button>
                     <button value="/" type="button" name="button">/</button>
