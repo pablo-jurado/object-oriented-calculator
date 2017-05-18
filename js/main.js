@@ -20,6 +20,7 @@ calculator1.press('=')
 // after this string of commands, the calculator should be showing "8"
 
 // the .value() method returns a number value after '=' has been pressed
+console.log('line 23 ----->', calculator1.value())
 console.assert(calculator1.value() === 8)
 // or null if the calculator is not showing a value currently
 console.assert(calculator2.value() === null)
