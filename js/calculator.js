@@ -20,13 +20,13 @@ class Calculator {
     if (this.isCalcUnluck) {
       let input = btnValue.toString()
       if (input.length !== 1) return
-
       if (input === 'C') {
         this.clear()
       } else if (input === '+' || input === '-' || input === 'x' || input === '/' || input === '=') {
         this._updateOperation(input)
-        // this._updateArray(input)
       } else {
+        // check for press('.') multiple times
+        if (input === '.' && this.numStr[this.numStr.length - 1] === '.') return
         this._updateNumber(input)
       }
     }
@@ -49,8 +49,6 @@ class Calculator {
     if (opp === '/') result = num1 / num2
 
     this.numStr = result
-    console.log(this.acc)
-    console.log('---> result:', result)
     return result
   }
 
@@ -76,6 +74,7 @@ class Calculator {
   }
 
   toString () {
+    if (this.numStr !== '') this.acc.push(this.numStr)
     let str = this.acc.join(' ')
     return str
   }
@@ -102,7 +101,7 @@ class Calculator {
     this._updateScreen(input)
     if (input === '=') {
       this._updateScreen(this.value())
-      this.acc = [] // TODO: needs work
+      // this.acc = []
     }
   }
 
@@ -112,27 +111,18 @@ class Calculator {
 
   _updateScreen (input) {
     this._el.querySelector('.screen').innerHTML = input
-    // let screen = this._el.querySelector('.screen')
-    // if (typeof input === 'string') screen.innerHTML = input
-    // else screen.innerHTML = input.join(' ')
   }
 
   _addListener (id) {
     var that = this
     this._el.addEventListener('click', function (evt) {
       let btnValue = evt.target.value
-      if (btnValue !== undefined) {
-        that.press(btnValue)
-      }
+      if (btnValue !== undefined) that.press(btnValue)
     })
   }
 
   _renderCalculator () {
     this._el.innerHTML = this._buildHtml()
-  }
-
-  _lockOperations () {
-
   }
 
   _buildHtml () {
@@ -165,7 +155,7 @@ class Calculator {
                 </div>
                 <div class="row">
                   <button class="num bottom-left-border" value="0" type="button" name="button">0</button>
-                  <button class="num" value="." type="button" name="button">.</button>
+                  <button class="dot" value="." type="button" name="button">.</button>
                   <button class="aperation flex2 bottom-right-border" value="=" type="button" name="button">=</button>
                 </div>
               </div>
